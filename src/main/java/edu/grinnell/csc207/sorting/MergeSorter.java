@@ -5,8 +5,7 @@ import java.util.Comparator;
 /**
  * Something that sorts using merge sort.
  *
- * @param <T>
- *   The types of values that are sorted.
+ * @param <T> The types of values that are sorted.
  *
  * @author Samuel A. Rebelsky
  */
@@ -28,9 +27,7 @@ public class MergeSorter<T> implements Sorter<T> {
   /**
    * Create a sorter using a particular comparator.
    *
-   * @param comparator
-   *   The order in which elements in the array should be ordered
-   *   after sorting.
+   * @param comparator The order in which elements in the array should be ordered after sorting.
    */
   public MergeSorter(Comparator<? super T> comparator) {
     this.order = comparator;
@@ -43,22 +40,17 @@ public class MergeSorter<T> implements Sorter<T> {
   /**
    * Sort an array in place using merge sort.
    *
-   * @param values
-   *   an array to sort.
+   * @param values an array to sort.
    *
-   * @post
-   *   The array has been sorted according to some order (often
-   *   one given to the constructor).
-   * @post
-   *   For all i, 0 &lt; i &lt; values.length,
-   *     order.compare(values[i-1], values[i]) &lt;= 0
+   * @post The array has been sorted according to some order (often one given to the constructor).
+   * @post For all i, 0 &lt; i &lt; values.length, order.compare(values[i-1], values[i]) &lt;= 0
    */
   @Override
   public void sort(T[] values) {
     if (values.length <= 1) {
       return;
-    }
-    
+    } // if
+
     int middle = values.length / 2;
     int lIndex = 0;
     int rIndex = 0;
@@ -67,13 +59,13 @@ public class MergeSorter<T> implements Sorter<T> {
     T[] leftArray = (T[]) new Object[middle];
     T[] rightArray = (T[]) new Object[values.length - middle];
 
-    for(int i = 0; i < middle; i++) {
+    for (int i = 0; i < middle; i++) {
       leftArray[i] = values[i];
-    }
+    } // for
 
     for (int i = middle; i < values.length; i++) {
       rightArray[i - middle] = values[i];
-    }
+    } // for
 
     sort(leftArray);
     sort(rightArray);
@@ -85,19 +77,19 @@ public class MergeSorter<T> implements Sorter<T> {
       } else {
         values[currIndex] = rightArray[rIndex];
         rIndex++;
-      }
-    }
+      } // else
+    } // for
 
     while (lIndex < leftArray.length) {
       values[currIndex] = leftArray[lIndex];
       lIndex++;
       currIndex++;
-    }
+    } // while
 
     while (rIndex < rightArray.length) {
       values[currIndex] = rightArray[rIndex];
       rIndex++;
       currIndex++;
-    }
+    } // while
   } // sort(T[])
 } // class MergeSorter
