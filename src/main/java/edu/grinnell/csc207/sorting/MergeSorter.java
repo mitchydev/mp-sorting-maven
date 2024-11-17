@@ -8,6 +8,7 @@ import java.util.Comparator;
  * @param <T> The types of values that are sorted.
  *
  * @author Samuel A. Rebelsky
+ * @author Mitch Paiva
  */
 
 public class MergeSorter<T> implements Sorter<T> {
@@ -52,9 +53,6 @@ public class MergeSorter<T> implements Sorter<T> {
     } // if
 
     int middle = values.length / 2;
-    int lIndex = 0;
-    int rIndex = 0;
-    int currIndex = 0;
 
     T[] leftArray = (T[]) new Object[middle];
     T[] rightArray = (T[]) new Object[values.length - middle];
@@ -70,26 +68,42 @@ public class MergeSorter<T> implements Sorter<T> {
     sort(leftArray);
     sort(rightArray);
 
-    for (int i = 0; lIndex < leftArray.length && rIndex < rightArray.length; currIndex++) {
-      if (order.compare(leftArray[lIndex], rightArray[rIndex]) <= 0) {
-        values[currIndex] = leftArray[lIndex];
+    merge(values, leftArray, rightArray);
+
+  } // while
+
+  /**
+   * Merge the two sorted arrays.
+   *
+   * @param values
+   * @param lArray
+   * @param rArray
+   */
+  public void merge(T[] values, T[] lArray, T[] rArray) {
+    int lIndex = 0;
+    int rIndex = 0;
+    int currIndex = 0;
+
+    for (int i = 0; lIndex < lArray.length && rIndex < rArray.length; currIndex++) {
+      if (order.compare(lArray[lIndex], rArray[rIndex]) <= 0) {
+        values[currIndex] = lArray[lIndex];
         lIndex++;
       } else {
-        values[currIndex] = rightArray[rIndex];
+        values[currIndex] = rArray[rIndex];
         rIndex++;
       } // else
     } // for
 
-    while (lIndex < leftArray.length) {
-      values[currIndex] = leftArray[lIndex];
+    while (lIndex < lArray.length) {
+      values[currIndex] = lArray[lIndex];
       lIndex++;
       currIndex++;
     } // while
 
-    while (rIndex < rightArray.length) {
-      values[currIndex] = rightArray[rIndex];
+    while (rIndex < rArray.length) {
+      values[currIndex] = rArray[rIndex];
       rIndex++;
       currIndex++;
     } // while
-  } // sort(T[])
+  } // merge
 } // class MergeSorter

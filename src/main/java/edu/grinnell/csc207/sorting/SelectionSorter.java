@@ -8,6 +8,7 @@ import java.util.Comparator;
  * @param <T> The types of values that are sorted.
  *
  * @author Samuel A. Rebelsky
+ * @author Mitch Paiva
  */
 
 public class SelectionSorter<T> implements Sorter<T> {
@@ -38,6 +39,24 @@ public class SelectionSorter<T> implements Sorter<T> {
   // +---------+
 
   /**
+   * finds the index of the smallest element in the range of the array.
+   *
+   * @param values
+   * @param start
+   *
+   * @return least.
+   */
+  public int indexOfSmallest(T[] values, int start) {
+    int least = start;
+    for (int j = start + 1; j < values.length; j++) {
+      if (order.compare(values[j], values[least]) < 0) {
+        least = j;
+      } // if
+    } // for
+    return least;
+  } // indexOfSmallest
+
+  /**
    * Sort an array in place using selection sort.
    *
    * @param values an array to sort.
@@ -48,15 +67,10 @@ public class SelectionSorter<T> implements Sorter<T> {
   @Override
   public void sort(T[] values) {
     for (int i = 0; i < values.length - 1; i++) {
-      int least = i;
-      for (int j = i + 1; j < values.length; j++) {
-        if (order.compare(values[j], values[least]) < 0) {
-          least = j;
-        } // if
-      } // for
+      int least = indexOfSmallest(values, i);
       T temp = values[i];
       values[i] = values[least];
       values[least] = temp;
     } // for
-  } // sort(T[])
+  } // sort
 } // class SelectionSorter
