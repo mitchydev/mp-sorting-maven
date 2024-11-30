@@ -57,6 +57,22 @@ public class SelectionSorter<T> implements Sorter<T> {
   } // indexOfSmallest
 
   /**
+   * Swaps values in the array.
+   *
+   * @param values an array to sort.
+   * @param i the index of the first element.
+   * @param x the index of the second element.
+   *
+   * @post The array has been sorted according to some order (often one given to the constructor).
+   * @post For all i, 0 &lt; i &lt; values.length, order.compare(values[i-1], values[i]) &lt;= 0
+   */
+  public void swap(T[] values, int i, int x) {
+    T temp = values[i];
+    values[i] = values[x];
+    values[x] = temp;
+  }
+
+  /**
    * Sort an array in place using selection sort.
    *
    * @param values an array to sort.
@@ -68,9 +84,7 @@ public class SelectionSorter<T> implements Sorter<T> {
   public void sort(T[] values) {
     for (int i = 0; i < values.length - 1; i++) {
       int least = indexOfSmallest(values, i);
-      T temp = values[i];
-      values[i] = values[least];
-      values[least] = temp;
+      swap(values, i, least);
     } // for
   } // sort
 } // class SelectionSorter

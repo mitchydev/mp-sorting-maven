@@ -49,13 +49,25 @@ public class InsertionSorter<T> implements Sorter<T> {
   @Override
   public void sort(T[] values) {
     for (int i = 1; i < values.length; i++) {
-      T val = values[i];
-      int x = i - 1;
-      while (x >= 0 && (order.compare(values[x], val) > 0)) {
-        values[x + 1] = values[x];
-        x--;
-      } // while
-      values[x + 1] = val;
+      insert(values, i);
     } // for
   } // sort(T[])
+
+  /**
+   * Insert the element into a given position.
+   *
+   * @param values an array to sort.
+   * 
+   * @param pos the position of the element to insert.
+   *
+   */
+  private void insert(T[] values, int pos) {
+    T val = values[pos];
+    int x = pos - 1;
+    while (x >= 0 && (order.compare(values[x], val) > 0)) {
+      values[x + 1] = values[x];
+      x--;
+    } // while
+    values[x + 1] = val;
+  }
 } // class InsertionSorter
