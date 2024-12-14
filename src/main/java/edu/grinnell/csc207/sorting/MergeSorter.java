@@ -28,7 +28,8 @@ public class MergeSorter<T> implements Sorter<T> {
   /**
    * Create a sorter using a particular comparator.
    *
-   * @param comparator The order in which elements in the array should be ordered after sorting.
+   * @param comparator The order in which elements in the array should be ordered
+   *                   after sorting.
    */
   public MergeSorter(Comparator<? super T> comparator) {
     this.order = comparator;
@@ -43,66 +44,70 @@ public class MergeSorter<T> implements Sorter<T> {
    *
    * @param values an array to sort.
    *
-   * @post The array has been sorted according to some order (often one given to the constructor).
-   * @post For all i, 0 &lt; i &lt; values.length, order.compare(values[i-1], values[i]) &lt;= 0
+   * @post The array has been sorted according to some order (often one given to
+   *       the constructor).
+   * @post For all i, 0 &lt; i &lt; values.length, order.compare(values[i-1],
+   *       values[i]) &lt;= 0
    */
   @Override
   public void sort(T[] values) {
-    if (values.length <= 1) {
+    T[] helper = (T[]) new Object[values.length];
+    mergeSort(values, helper, 0, values.length - 1);
+  } // while
+
+  /**
+   * Recursively divides and sorts the array.
+   *
+   * @param values
+   * @param helper
+   * @param low
+   * @param high
+   */
+  private void mergeSort(T[] values, T[] helper, int low, int high) {
+    if (low >= high) {
       return;
     } // if
 
-    int middle = values.length / 2;
+    int middle = (low + high) / 2;
 
-    T[] leftArray = (T[]) new Object[middle];
-    T[] rightArray = (T[]) new Object[values.length - middle];
+    mergeSort(values, helper, low, middle);
+    mergeSort(values, helper, middle + 1, high);
 
-    for (int i = 0; i < middle; i++) {
-      leftArray[i] = values[i];
-    } // for
-
-    for (int i = middle; i < values.length; i++) {
-      rightArray[i - middle] = values[i];
-    } // for
-
-    sort(leftArray);
-    sort(rightArray);
-
-    merge(values, leftArray, rightArray);
-
-  } // while
+    merge(values, helper, low, middle, high);
+  } // mergeSort
 
   /**
    * Merge the two sorted arrays.
    *
    * @param values
-   * @param lArray
-   * @param rArray
+   * @param helper
+   * @param low
+   * @param middle
+   * @param high
    */
-  public void merge(T[] values, T[] lArray, T[] rArray) {
-    int lIndex = 0;
-    int rIndex = 0;
-    int currIndex = 0;
-
-    for (int i = 0; lIndex < lArray.length && rIndex < rArray.length; currIndex++) {
-      if (order.compare(lArray[lIndex], rArray[rIndex]) <= 0) {
-        values[currIndex] = lArray[lIndex];
-        lIndex++;
-      } else {
-        values[currIndex] = rArray[rIndex];
-        rIndex++;
-      } // else
+  public void merge(T[] values, T[] helper, int low, int middle, int high) {
+    for (int i = low; i <= high; i++) {
+      helper[i] = values[i];
     } // for
 
-    while (lIndex < lArray.length) {
-      values[currIndex] = lArray[lIndex];
-      lIndex++;
+    int lIndex = low;
+    int rIndex = middle + 1;
+    int currIndex = low;
+
+    while (lIndex <= middle && rIndex <= high) {
+      if (order.compare(helper[lIndex], helper[rIndex]) <= 0) {
+        values[currIndex] = helper[lIndex];
+        lIndex++;
+      } else {
+        values[currIndex] = helper[rIndex];
+        rIndex++;
+      } // else
       currIndex++;
     } // while
 
-    while (rIndex < rArray.length) {
-      values[currIndex] = rArray[rIndex];
-      rIndex++;
+    while (lIndex <= middle) {
+      values[currIndex] = helper[lIndex];
+      lIndex++;
       currIndex++;
     } // while
   } // merge

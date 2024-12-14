@@ -57,7 +57,7 @@ public class InsertionSorter<T> implements Sorter<T> {
    * Insert the element into a given position.
    *
    * @param values an array to sort.
-   * 
+   *
    * @param pos the position of the element to insert.
    *
    */
@@ -69,5 +69,5 @@ public class InsertionSorter<T> implements Sorter<T> {
       x--;
     } // while
     values[x + 1] = val;
-  }
+  } // insert
 } // class InsertionSorter

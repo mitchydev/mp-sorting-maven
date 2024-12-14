@@ -64,7 +64,7 @@ public class Quicksorter<T> implements Sorter<T> {
     if (lb >= ub) {
       return;
     } // if
-    int[] dnfBpunds = dutchNationalFlag(values, lb, ub);
+    int[] dnfBpunds = partition(values, lb, ub);
     quicksort(values, lb, dnfBpunds[0] - 1);
     quicksort(values, dnfBpunds[1] + 1, ub);
   } // quicksort
@@ -79,7 +79,7 @@ public class Quicksorter<T> implements Sorter<T> {
    * @return int[]
    *
    */
-  public int[] dutchNationalFlag(T[] values, int lb, int ub) {
+  public int[] partition(T[] values, int lb, int ub) {
     Random rand = new Random();
     int pIndex = lb + rand.nextInt(ub - lb + 1);
     T pivot = values[pIndex];
@@ -103,7 +103,7 @@ public class Quicksorter<T> implements Sorter<T> {
     } // while
 
     return new int[] {lessThan, greaterThan};
-  } // dutchNationalFlag
+  } // partition
 
   /**
    * Reorders elements.

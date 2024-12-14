@@ -46,7 +46,7 @@ public class SelectionSorter<T> implements Sorter<T> {
    *
    * @return least.
    */
-  public int indexOfSmallest(T[] values, int start) {
+  public int selection(T[] values, int start) {
     int least = start;
     for (int j = start + 1; j < values.length; j++) {
       if (order.compare(values[j], values[least]) < 0) {
@@ -70,7 +70,7 @@ public class SelectionSorter<T> implements Sorter<T> {
     T temp = values[i];
     values[i] = values[x];
     values[x] = temp;
-  }
+  } // swap
 
   /**
    * Sort an array in place using selection sort.
@@ -83,7 +83,7 @@ public class SelectionSorter<T> implements Sorter<T> {
   @Override
   public void sort(T[] values) {
     for (int i = 0; i < values.length - 1; i++) {
-      int least = indexOfSmallest(values, i);
+      int least = selection(values, i);
       swap(values, i, least);
     } // for
   } // sort
